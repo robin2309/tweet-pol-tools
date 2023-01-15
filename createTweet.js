@@ -6,18 +6,25 @@ const usersConf = require("./usersConf");
 dotenv.config();
 
 const ABSENT = "absent";
+const ABSTENTION = "abstention";
 
-const law = "la motion de censure déposée en application du 49.3";
+const law =
+  "le projet de loi relatif à l'accélération de la production d'énergies renouvelables";
 const link =
-  "https://www.assemblee-nationale.fr/dyn/16/dossiers/engagement_responsabilite_gvt_1erepartie_PLF_2023";
+  "https://www.assemblee-nationale.fr/dyn/16/dossiers/DLR5L16N46539?etape=16-AN1";
+
+const getWordedStand = ({ stand, isFemale }) => {
+  const genderAbsent = isFemale ? "ABSENTE" : "ABSENT";
+  if (stand === ABSENT) {
+    return `était ${genderAbsent} au vote sur`;
+  }
+  return stand === ABSTENTION
+    ? `s'est ABSTENU${isFemale ? "E" : ""} lors du vote sur`
+    : `a voté ${stand.toUpperCase()}`;
+};
 
 const getTweet = ({ name, stand, isFemale }) => {
-  const genderAbsent = isFemale ? "ABSENTE" : "ABSENT";
-  const wordedStand =
-    stand === ABSENT
-      ? `était ${genderAbsent} au vote sur`
-      : `a voté ${stand.toUpperCase()}`;
-  return `${name} ${wordedStand} ${law} - ${link}`;
+  return `${name} ${getWordedStand({ stand, isFemale })} ${law} - ${link}`;
 };
 
 const filterSkippable = ({ skip }) => !skip;
