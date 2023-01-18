@@ -9,9 +9,12 @@ const ABSENT = "absent";
 const ABSTENTION = "abstention";
 
 const law =
-  "le projet de loi relatif à l'accélération de la production d'énergies renouvelables";
+  "le dossier visant à sécuriser l'approvisionnement des Français en produits de grande consommation";
 const link =
-  "https://www.assemblee-nationale.fr/dyn/16/dossiers/DLR5L16N46539?etape=16-AN1";
+  "https://www.assemblee-nationale.fr/dyn/16/dossiers/securiser_approvisionnement_francais_produit_grande_consommation_xvie";
+const lawLink =
+  "https://www.assemblee-nationale.fr/dyn/16/dossiers/DLR5L16N46270?etape=16-SN2";
+const status = "est passé en deuxième lecture au Sénat";
 
 const getWordedStand = ({ stand, isFemale }) => {
   const genderAbsent = isFemale ? "ABSENTE" : "ABSENT";
@@ -29,6 +32,44 @@ const getTweet = ({ name, stand, isFemale }) => {
 
 const filterSkippable = ({ skip }) => !skip;
 
+const altavoixUser = usersConf.find(({ name }) => {
+  return name === "AltaVoix";
+});
+
+/**
+ * TWEET AS ALTAVOIX
+ */
+// const tweetAsAltavoix = () => {
+//   const client = new TwitterApi({
+//     appKey: process.env.APP_KEY,
+//     appSecret: process.env.APP_SECRET,
+//     accessToken: altavoixUser.token,
+//     accessSecret: altavoixUser.secret,
+//   });
+
+//   // const tweet = `${
+//   //   law.charAt(0).toUpperCase() + law.slice(1)
+//   // } ${status}: ${lawLink}`;
+//   const tweet =
+//     "L'assemblée nationale a adopté en première lecture le texte pour sécuriser l'approvisionnement des Français en produits de grande consommation: https://www.assemblee-nationale.fr/dyn/16/dossiers/securiser_approvisionnement_francais_produit_grande_consommation_xvie";
+//   console.log(tweet);
+
+//   return client.v2
+//     .tweet(tweet)
+//     .then((val) => {
+//       console.log(val);
+//       console.log("tweeted for Altavoix");
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };
+
+// tweetAsAltavoix();
+
+/**
+ * DEBUG NEW TWEET FORMAT
+ */
 // usersConf.filter(filterSkippable).map((user) => {
 //   const { name, isFemale, stand, token, secret } = user;
 
@@ -36,6 +77,9 @@ const filterSkippable = ({ skip }) => !skip;
 //   console.log(tweet);
 // });
 
+/**
+ * TWEET AS MEMBER
+ */
 Promise.all(
   usersConf.filter(filterSkippable).map((user) => {
     const { name, isFemale, stand, token, secret } = user;
